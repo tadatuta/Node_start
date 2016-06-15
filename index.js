@@ -1,11 +1,36 @@
-var prompt = require('prompt');
-var powFunc = require('./lib/myPow.js');
+function myPow(base,exponent){
+    
+    var resault=0;
 
-function Pow() {
-    prompt.start();
-    prompt.get(['base', 'exponent'], function (err, result) {
-        console.log('Resault is ', powFunc(result.base, result.exponent));
-    });
+    if(!(isNumeric(base)&&isNumeric(exponent))) return NaN;
+
+    if (base == 0){
+        if (exponent < 0){
+            return Infinity
+        }
+
+        if (exponent == 0){
+            return 1;
+        }
+
+        return 0;
+    }
+
+    if (exponent==0){
+        return 1;
+    }
+
+    var resault = Math.exp(exponent*Math.log(Math.abs(base))).toFixed(14);
+    if (base<0 && exponent%2 != 0){
+        resault *= -1;
+    }
+
+    return resault;
+    
 }
 
-module.exports = Pow;
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+module.exports = myPow;
