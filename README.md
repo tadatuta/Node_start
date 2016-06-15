@@ -1,17 +1,4 @@
-{
-  "name": "node-myPow",
-  "version": "1.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha --reporter spec"
-  },
-  "author": "Boris Kliushyn",
-  "license": "ISC",
-  "dependencies": {
-    "prompt": "^1.0.0"
-  },
-  "devDependencies": {
-    "mocha": "^2.5.3"
-  }
-}
+# myPow
+
+Моя реализация стандартной функции Math.pow()
+
