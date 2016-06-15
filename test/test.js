@@ -1,5 +1,5 @@
 const assert = require('assert');
-const myPow = require('../lib/myPow.js');
+const myPow = require('../index.js');
 
 describe('myPow test', function() {
     describe('Operations with 0', function() {
@@ -8,25 +8,25 @@ describe('myPow test', function() {
         const expected = Math.pow(base,exponent);
         const result = myPow(0,-1);
 
-        it('0^-1 check', function() {
+        it('Should be Infinity', function() {
             assert.equal(result, expected);
         });
 
         exponent = 0;
 
-        it('0^0 check', function() {
+        it('Should be 1', function() {
             assert.equal(result, expected);
         });
 
         exponent = 1;
 
-        it('0^1 check', function() {
+        it('Should be 0', function() {
             assert.equal(result, expected);
         });
 
         exponent = 1.1;
 
-        it('0^1.1 check', function() {
+        it('Should be 0', function() {
             assert.equal(result, expected);
         });
     });
@@ -37,25 +37,25 @@ describe('myPow test', function() {
         const expected = Math.pow(base,exponent);
         const result = myPow(base,exponent);
 
-        it('1^-1 check', function() {
+        it('Should be 1', function() {
             assert.equal(result, expected);
         });
 
         exponent = 0;
 
-        it('1^0 check', function() {
+        it('Should be 1', function() {
             assert.equal(result, expected);
         });
 
         exponent = 1;
 
-        it('1^1 check', function() {
+        it('Should be 1', function() {
             assert.equal(result, expected);
         });
 
         exponent = 1.1;
 
-        it('1^1.1 check', function() {
+        it('Should be 1', function() {
             assert.equal(result, expected);
         });
         
@@ -68,21 +68,21 @@ describe('myPow test', function() {
         const expected = NaN;
         const result = myPow(base,exponent);
 
-        it('qwe^qwe check', function() {
+        it('Should be NaN', function() {
             assert(isNaN(result));
         });
         
         base = 1;
         exponent = '1d' ;
 
-        it('1^1d check', function() {
+        it('Should be NaN', function() {
             assert(isNaN(result));
         });
 
         base = '1d';
         exponent = 1 ;
         
-        it('1d^1 check', function() {
+        it('Should be NaN', function() {
             assert(isNaN(result));
         });
 
@@ -95,45 +95,45 @@ describe('myPow test', function() {
         const expected = Math.pow(base,exponent).toFixed(14); // number rounding
         const result = myPow(base,exponent);
 
-        it('-2^-1 check', function() {
+        it('Should be 0.5', function() {
             assert.equal(result, expected);
         });
         
         exponent = -3 ;
 
-        it('-2^-3 check', function() {
+        it('Should be -0.125', function() {
             assert.equal(result, expected);
         });
 
         base = 2;
         exponent = -3 ;
 
-        it('2^-3 check', function() {
+        it('Should be 0.125', function() {
             assert.equal(result, expected);
         });
 
         base = 2;
         exponent = 3 ;
 
-        it('2^3 check', function() {
+        it('Should be 8', function() {
             assert.equal(result, expected);
         });
 
         exponent = 3.33 ;
 
-        it('2^3.33 check', function() {
+        it('Should be 10.05610699617463', function() {
             assert.equal(result, expected);
         });
 
         exponent = 0 ;
 
-        it('2^0 check', function() {
+        it('Should be 1', function() {
             assert.equal(result, expected);
         });
 
         exponent = 1 ;
 
-        it('2^1 check', function() {
+        it('Should be 2', function() {
             assert.equal(result, expected);
         });
     });
