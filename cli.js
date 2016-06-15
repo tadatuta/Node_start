@@ -7,7 +7,7 @@ function pow() {
 
     prompt.start();
     prompt.get(['base', 'exponent'], function (err, result) {
-        
+
         if(err) {
             return 'Error: ' + err;
         }
