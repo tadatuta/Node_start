@@ -66,7 +66,7 @@ const server = app.get('/', function (req, res) {
     q.drain = function(){
         res.send('DONE');
         fs.writeFileSync('./data.json', JSON.stringify(results, null, 4));
-        console.log('Task completed')
+        console.log('Task complete')
     };
     
     links[query.url] = 1;
