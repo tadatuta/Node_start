@@ -12,23 +12,30 @@ const url = require('url');
 const needle = require('needle');
 
 const server = app.get('/', function (req, res) {
+    scrapper(req, res);
+});
+
+server.listen(port);
+console.log(`Server started at ${port} port`);
+
+function scrapper(req, res) {
     const urlObj = url.parse(req.url);
     const query = qs.parse(urlObj.query);
     const hostname = url.parse(query.url).hostname;
     const fullHostname = url.parse(query.url).protocol + '//' + hostname;
     const selector = query.selector;
-    
+
     let links = [];
     let results = [];
     let counter = query.count; // Max links amount
-    
+
     console.log(`URL: ${query.url}  LINKS NUMBER: ${counter}    SELECTOR: ${selector}`);
     if( isNumber(counter)) {
         const q = tress(function (nextUrl, callback) {
             needle.get(nextUrl, function(err, data){
                 if (err) {
                     console.error(`Error in URL: ${nextUrl}: ${err}`);
-                    return
+                    return 'Error in URL'
                 }
                 const $ = cheerio.load(data.body);
                 console.log(nextUrl);
@@ -61,22 +68,19 @@ const server = app.get('/', function (req, res) {
         q.drain = function(){
             fs.writeFileSync('./data.json', JSON.stringify(results, null, 4));
             console.log('Task complete');
-            
+
         };
         res.send('Task accepted');
         links[query.url] = 1;
         q.push(query.url);
 
-    } else { 
+    } else {
         console.error('count field is not number!!!');
-        res.send('count field is not number!!!'); 
+        res.send('count field is not number!!!');
     }
-});
-
-server.listen(port);
-console.log(`Server started at ${port} port`);
-
+}
 
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
+    
