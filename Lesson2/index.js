@@ -68,6 +68,7 @@ function scrapper(req, res) {
         q.drain = function(){
             fs.writeFileSync('./data.json', JSON.stringify(results, null, 4));
             console.log('Task complete');
+            return 'Task complete';
 
         };
         res.send('Task accepted');
@@ -77,6 +78,7 @@ function scrapper(req, res) {
     } else {
         console.error('count field is not number!!!');
         res.send('count field is not number!!!');
+        return 'count field is not number!!!';
     }
 }
 
