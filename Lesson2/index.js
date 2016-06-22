@@ -1,17 +1,15 @@
 'use strict';
 
-const tress = require('tress');
-const cheerio = require('cheerio');
-const fs = require('fs');
 const express = require('express');
 const app = express();
 const port = 3000;
+
+const tress = require('tress');
+const cheerio = require('cheerio');
+const fs = require('fs');
 const qs = require('querystring');
 const url = require('url');
 const needle = require('needle');
-const URL = 'http://webscraper.io/test-sites/e-commerce/more';
-const SELECTOR = '.caption';
-
 
 const server = app.get('/', function (req, res) {
     const urlObj = url.parse(req.url);
@@ -22,16 +20,16 @@ const server = app.get('/', function (req, res) {
     
     let links = [];
     let results = [];
-    let counter = query.count;
+    let counter = query.count; // Max links amount
     
-
     console.log(`URL: ${query.url}  LINKS NUMBER: ${counter}    SELECTOR: ${selector}`);
-   
- 
-    
-    const q = tress(function (nextUrl, callback) {
-        needle.get(nextUrl, function(err, data){
-                if (err) throw err;
+    if( isNumber(counter)) {
+        const q = tress(function (nextUrl, callback) {
+            needle.get(nextUrl, function(err, data){
+                if (err) {
+                    console.error(`Error in URL: ${nextUrl}: ${err}`);
+                    return
+                }
                 const $ = cheerio.load(data.body);
                 console.log(nextUrl);
                 $(selector).each(function () {
@@ -42,14 +40,12 @@ const server = app.get('/', function (req, res) {
                 });
                 $('a').each(function () {
                     var link = $(this).attr('href');
-                    //console.log(`link: ${link} url: ${nextUrl}`);
-                    if(link != undefined) {
-                        if (link[0] == '/') {
-                            link = url.resolve(fullHostname, link);
+                    if (link != undefined) {
+                        if (link[0] == '/') { // Short link
+                            link = url.resolve(fullHostname, link); // Host + short link
                         }
-                        //console.log(`link: ${link} url: ${nextUrl}`);
                         if (!links[link] && url.parse(link).hostname == hostname && url.parse(link).protocol != 'mailto:') {
-                            links[link] = 1;
+                            links[link] = 1; // Add new link
                             if (counter > 0) {
                                 counter--;
                                 q.push(link);
@@ -59,20 +55,28 @@ const server = app.get('/', function (req, res) {
                 });
 
                 callback();
-                
-        });
-    }, 100);
+            });
+        }, 100);
 
-    q.drain = function(){
-        res.send('DONE');
-        fs.writeFileSync('./data.json', JSON.stringify(results, null, 4));
-        console.log('Task complete')
-    };
-    
-    links[query.url] = 1;
-    q.push(query.url);
+        q.drain = function(){
+            fs.writeFileSync('./data.json', JSON.stringify(results, null, 4));
+            console.log('Task complete');
+            
+        };
+        res.send('Task accepted');
+        links[query.url] = 1;
+        q.push(query.url);
+
+    } else { 
+        console.error('count field is not number!!!');
+        res.send('count field is not number!!!'); 
+    }
 });
-
 
 server.listen(port);
 console.log(`Server started at ${port} port`);
+
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
