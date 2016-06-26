@@ -1,6 +1,6 @@
 {
-  "name": "lesson2",
-  "version": "1.0.0",
+  "name": "scrapper",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,11 +8,19 @@
   },
   "author": "Boris Kliushyn",
   "license": "ISC",
+  "bin": {
+    "scrapper": "./bin/cli"
+  },
   "dependencies": {
     "cheerio": "^0.20.0",
+    "command-line-args": "^3.0.0",
+    "command-line-usage": "^3.0.1",
     "express": "^4.14.0",
     "got": "^6.3.0",
     "needle": "^1.0.0",
     "tress": "^1.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
   }
 }

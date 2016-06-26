@@ -15,8 +15,10 @@ const server = app.get('/', function (req, res) {
     scrapper(req, res);
 });
 
-server.listen(port);
-console.log(`Server started at ${port} port`);
+if(!module.parent) {
+    server.listen(port);
+    console.log(`Server started at ${port} port`);
+}
 
 function scrapper(req, res) {
     const urlObj = url.parse(req.url);
@@ -24,6 +26,7 @@ function scrapper(req, res) {
     const hostname = url.parse(query.url).hostname;
     const fullHostname = url.parse(query.url).protocol + '//' + hostname;
     const selector = query.selector;
+    
 
     let links = [];
     let results = [];
@@ -71,13 +74,17 @@ function scrapper(req, res) {
             return 'Task complete';
 
         };
-        res.send('Task accepted');
+        if(res) {
+            res.send('Task accepted');
+        }
         links[query.url] = 1;
         q.push(query.url);
 
     } else {
         console.error('count field is not number!!!');
-        res.send('count field is not number!!!');
+        if(res) {
+            res.send('count field is not number!!!');
+        }
         return 'count field is not number!!!';
     }
 }
@@ -86,3 +93,4 @@ function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
     
+module.exports = scrapper;
