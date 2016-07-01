@@ -49,7 +49,7 @@ function scrapper(req, res) {
                     });
                 });
                 $('a').each(function () {
-                    var link = $(this).attr('href');
+                    let link = $(this).attr('href');
                     if (link != undefined) {
                         if (link[0] == '/') { // Short link
                             link = url.resolve(fullHostname, link); // Host + short link
