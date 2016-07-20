@@ -16,7 +16,6 @@
     "command-line-args": "^3.0.0",
     "command-line-usage": "^3.0.1",
     "express": "^4.14.0",
-    "got": "^6.3.0",
     "needle": "^1.0.0",
     "tress": "^1.0.3"
   },
